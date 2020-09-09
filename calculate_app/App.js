@@ -4,12 +4,18 @@ import { StyleSheet, Text, View } from 'react-native';
 import NumberInput from './Number'
 
 const buttonsSet_1 = [
-    ['C', '()', '%', 'DEL'],
-    ['7', '8', '9', '÷'],
+    ['C', '( )', '%', 'DEL'],
+    ['7', '8', '9', '/'], // ÷
     ['4', '5', '6', '*'],
     ['1', '2', '3', '-'],
     ['.', '0', '=', '+']
-]
+];
+
+const expression = {
+    operator: ['÷', '*', '-', '+'],
+    symbol: ['C', '( )', '%', 'DEL', '=', '.']
+};
+
 export default class App extends Component {
 
     constructor() {
@@ -17,6 +23,7 @@ export default class App extends Component {
         this.state = {
             displayValue: '0',
             displayResult: ' ',
+            parenthesesCheck: true,
         }
     }
 
@@ -46,52 +53,90 @@ export default class App extends Component {
         return layouts
     }
 
+    isExpressionOperator = (key) => {
+        for (let i = 0; i < expression.operator.length; i++) {
+            if (expression.operator[i] === key)
+                return false;
+        }
+        return true;
+    }
+
+    isExpressionSymbol = (key) => {
+        for (let i = 0; i < expression.mark.length; i++) {
+            if (expression.markl[i] === key)
+                return false;
+        }
+        return true;
+    }
+
+    resetState = () => {
+        this.setState({
+            displayValue: '0',
+            displayResult: ' ',
+            parenthesesCheck: true
+        });
+    }
+
     handleInput = (input) => {
         const { displayValue } = this.state;
 
-        // show displayValue
+        // CASE Show screen value input
         if (!(input === '=' || input === 'DEL' || input === 'C')) {
-            this.setState({
-                displayValue: displayValue != '0' ? displayValue + input : input,
-            });
 
-            // symbol last string
-            // เครื่องหมายหลังสุด
-            if (isNaN(displayValue.slice(-1)) && isNaN(input)) {
-                this.setState({
-                    displayValue: this.state.displayValue.replace(displayValue.slice(-1), input),
-                });
+            // Input defult
+            this.setState({ displayValue: displayValue != '0' ? displayValue + input : input});
+
+            // Parentheses
+            if (input === '( )' && this.state.parenthesesCheck) {
+                this.setState({ displayValue:  displayValue != '0' ? displayValue + '(' : '('});
+                this.setState({ parenthesesCheck: !this.state.parenthesesCheck });
+            } else if (input === '( )' && !this.state.parenthesesCheck) {
+                this.setState({ displayValue:  displayValue != '0' ? displayValue + ')' : ')'});
+                this.setState({ parenthesesCheck: !this.state.parenthesesCheck });
+            }
+
+            // Symbol last string
+            if (isNaN(displayValue.slice(-1)) && isNaN(input) && input != '( )') {
+                let displayValue = this.state.displayValue;
+                displayValue = displayValue.slice(0, displayValue.length - 1) + input;
+                this.setState({ displayValue });
             }
         }
 
-        // input == 'DEL'
+        // CASE Delete
         else if (input === 'DEL') {
+
+            //      if delete '(' set -> parenthesesCheck: true
+            // else if delete ')' set -> parenthesesCheck: false
+            if (displayValue.slice(-1) === '(')
+                this.setState({ parenthesesCheck: true });
+            else if (displayValue.slice(-1) === ')')
+                this.setState({ parenthesesCheck: false });
+
             // case lenght = 1 set value = 0
             if (this.state.displayValue.length == 1) {
                 this.setState({
                     displayValue: '0',
                 });
-            }
 
             // Defult
-            else {
+            } else {
                 this.setState({
-                    displayValue: this.state.displayValue.replace(displayValue.slice(-1), ''),
+                    displayValue: displayValue.slice(0, displayValue.length - 1),
                 });
             }
         }
 
+        // Calculate
         else if (input === '=') {
             this.setState({
                 displayResult: eval(this.state.displayValue)
             });
         }
 
+        // Clear  All
         else if (input === "C") {
-            this.setState({
-                displayValue: '0',
-                displayResult: ' ',
-            });
+            this.resetState();
         }
     }
 
@@ -106,9 +151,6 @@ export default class App extends Component {
                     <View style={styles.inputContainer} >
                         {this.renderButtonSet_1()}
                     </View>
-                    {/* <View style={styles.inputContainerSymbol} >
-                        {this.renderButtonSet_2()}
-                    </View> */}
                 </View>
             </View>
         );
@@ -122,19 +164,14 @@ const styles = StyleSheet.create({
     },
 
     resultContainer: {
-        flex: 3,
+        flex: 4,
         backgroundColor: 'white',
         justifyContent: 'center'
     },
 
     inputContainer: {
         flex: 6,
-        backgroundColor: 'black',
-    },
-
-    inputContainerSymbol: {
-        flex: 2,
-        backgroundColor: 'gray'
+        backgroundColor: 'gray',
     },
 
     resultText: {
@@ -154,8 +191,6 @@ const styles = StyleSheet.create({
 
     inputRow: {
         flex: 1,
-        borderTopWidth: 1,
         flexDirection: 'row',
-        borderTopColor: 'white'
     },
 });
