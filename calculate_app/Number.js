@@ -1,7 +1,37 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-export default class NumberInput extends Component {
+const expression = {
+    operator: ['÷', '*', '-', '+', '%', '.'],
+    symbol: ['C', 'DEL', '=']
+};
+
+const colorTextButton = {
+    textValue: 'white',
+    C: '#F57C00',
+    Operator: 'rgb(2, 200, 237)',
+    DEL: '#FFEB3B',
+    EqualTo: 'rgb(77, 255, 77)'
+}
+
+class NumberInput extends Component {
+
+    static isExpressionOperator = (key) => {
+        for (let i = 0; i < expression.operator.length; i++) {
+            if (expression.operator[i] === key)
+                return true;
+        }
+        return false;
+    }
+
+    static isExpressionSymbol = (key) => {
+        for (let i = 0; i < expression.symbol.length; i++) {
+            if (expression.symbol[i] === key)
+                return true;
+        }
+        return false;
+    }
+
     render() {
         const { value, handleOnPrees } = this.props;
         return (
@@ -11,13 +41,13 @@ export default class NumberInput extends Component {
                 {
                     (() => {
                         if (value === 'C') {
-                            return <Text style={[styles.textValue, { color: '#F57C00' }]}>{value}</Text>
-                        } else if (value === '( )' || value === '%' || value === '/' || value === '*' || value === '-' || value === '+') {
-                            return <Text style={[styles.textValue, { color: 'rgb(2, 200, 237)' }]}>{value}</Text>
+                            return <Text style={[styles.textValue, styles.C]}>{value}</Text>
+                        } else if (value === '( )' || NumberInput.isExpressionOperator(value)) {
+                            return <Text style={[styles.textValue, styles.Operator]}>{value}</Text>
                         } else if (value === 'DEL') {
-                            return <Text style={[styles.textValue, { color: '#FFEB3B' }]}>{value}</Text>
+                            return <Text style={[styles.textValue, styles.DEL]}>{value}</Text>
                         } else if (value === '=') {
-                            return <Text style={[styles.textValue, { color: 'rgb(77, 255, 77)' }]}>{value}</Text>
+                            return <Text style={[styles.textValue, styles.EqualTo]}>{value}</Text>
                         } else {
                             return <Text style={styles.textValue}>{value}</Text>
                         }
@@ -39,7 +69,24 @@ const styles = StyleSheet.create({
     },
 
     textValue: {
-        color: 'white',
+        color: colorTextButton.textValue,
         fontSize: 50
+    }, 
+
+    C: {
+        color: colorTextButton.C
+    },
+
+    Operator: {
+        color: colorTextButton.Operator
+    },
+
+    DEL: {
+        color: colorTextButton.DEL
+    },
+
+    EqualTo: {
+        color: colorTextButton.EqualTo
     }
 })
+export default NumberInput;
