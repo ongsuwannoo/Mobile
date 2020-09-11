@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import NumberInput from './Number'
+import NumberInput from './Render'
 
 const buttonsSet = [
     ['C', '( )', '%', 'DEL'],
@@ -101,7 +101,7 @@ export default class App extends Component {
                 this.setState({ parenthesesCheck: !this.state.parenthesesCheck });
 
                 /*
-                Show display defult
+                Show display default
                 EX.      before     |    input     |     output
                 case 1:    0        |      2       |       2
                 case 2:    2        |      8       |      28
@@ -153,7 +153,7 @@ export default class App extends Component {
                     displayValue: '0',
                 });
 
-                // Defult delete
+                // Default delete
             } else {
                 this.setState({
                     displayValue: displayValue.slice(0, displayValue.length - 1),
