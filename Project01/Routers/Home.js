@@ -25,26 +25,26 @@ const Home = () => {
       Actions.hairline()
    }
    return (
-      <View>
-         <TouchableOpacity style={{ marginTop: 20, marginLeft: 20 }} onPress={goToViewBoxes}>
+      <View style={{marginLeft: 50 }}>
+         <TouchableOpacity style={{ marginTop: 20}} onPress={goToViewBoxes}>
             <Text>Go to ViewBoxes</Text>
          </TouchableOpacity>
-         <TouchableOpacity style={{ marginTop: 20, marginLeft: 20 }} onPress={goToBoldAndBeautiful}>
+         <TouchableOpacity style={{ marginTop: 20}} onPress={goToBoldAndBeautiful}>
             <Text>Go to BoldAndBeautiful</Text>
          </TouchableOpacity>
-         <TouchableOpacity style={{ marginTop: 20, marginLeft: 20 }} onPress={goToTextInput}>
+         <TouchableOpacity style={{ marginTop: 20}} onPress={goToTextInput}>
             <Text>Go to TextInput</Text>
          </TouchableOpacity>
-         <TouchableOpacity style={{ marginTop: 20, marginLeft: 20 }} onPress={goToScrollView}>
+         <TouchableOpacity style={{ marginTop: 20}} onPress={goToScrollView}>
             <Text>Go to ScrollView</Text>
          </TouchableOpacity>
-         <TouchableOpacity style={{ marginTop: 20, marginLeft: 20 }} onPress={goToStyleSheet}>
+         <TouchableOpacity style={{ marginTop: 20}} onPress={goToStyleSheet}>
             <Text>Go to StyleSheet</Text>
          </TouchableOpacity>
-         <TouchableOpacity style={{ marginTop: 20, marginLeft: 20 }} onPress={goToflex}>
+         <TouchableOpacity style={{ marginTop: 20}} onPress={goToflex}>
             <Text>Go to Flex</Text>
          </TouchableOpacity>
-         <TouchableOpacity style={{ marginTop: 20, marginLeft: 20 }} onPress={goTohairline}>
+         <TouchableOpacity style={{ marginTop: 20}} onPress={goTohairline}>
             <Text>Go to Hairline</Text>
          </TouchableOpacity>
       </View>
