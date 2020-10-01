@@ -1,18 +1,46 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import React from 'react';
 import Status from './components/Status';
 import MessageList from './components/MessageList';
-import { createTextMessage } from './utils/MessageUtils';
+import { createTextMessage, createImageMessage } from './utils/MessageUtils';
 
 export default class App extends React.Component {
+
     state = {
-        message : [
-            createTextMessage('Hello, world')
-    ]};
+        messages: [
+            createTextMessage('Hello, world!1'),
+            createTextMessage('Hello, world!2'),
+            createImageMessage('https://s.isanook.com/tr/0/rp/r/w850/ya0xa0m1w0/aHR0cHM6Ly9zLmlzYW5vb2suY29tL3RyLzAvdWQvMjg0LzE0MjA4NzEvZ3JoLmpwZw==.jpg')
+        ]
+    };
+
+    onPressMessage = (item) => {
+        Alert.alert(
+            "Delete message?",
+            "Are you sure you want to permanently delete this message?",
+            [
+                {
+                    text: "CANCEL",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "DELETE", onPress: () => {
+                        this.setState({
+                            messages: this.state.messages.filter(obj => obj.id != item.id)
+                        })
+                        console.log('\x1b[41mDELETE\x1b[0m')
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
     renderMessageList() {
         return (
             <View style={styles.content}>
-                <MessageList message={this.state} />
+                <MessageList messages={this.state} onPressMessage={this.onPressMessage} />
             </View>
         );
     }
@@ -28,7 +56,6 @@ export default class App extends React.Component {
     }
     render() {
         console.log("\x1b[33mRestarted\x1b[0m");
-        console.log(this.renderMessageList())
 
         return (<View style={styles.container}>
             <Status />
