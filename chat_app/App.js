@@ -10,8 +10,8 @@ export default class App extends React.Component {
         messages: [
             createTextMessage('Hello, world!1'),
             createTextMessage('Hello, world!2'),
-            createImageMessage('https://s.isanook.com/tr/0/rp/r/w850/ya0xa0m1w0/aHR0cHM6Ly9zLmlzYW5vb2suY29tL3RyLzAvdWQvMjg0LzE0MjA4NzEvZ3JoLmpwZw==.jpg')
-        ]
+            createImageMessage('https://s.isanook.com/tr/0/rp/r/w728/ya0xa0m1w0/aHR0cHM6Ly9zLmlzYW5vb2suY29tL3RyLzAvdWQvMjgyLzE0MTQwMDEvZHNjZjk2NTcuanBn.jpg')
+        ].reverse()
     };
 
     onPressMessage = (item) => {

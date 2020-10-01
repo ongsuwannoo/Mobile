@@ -72,10 +72,12 @@ const styles = StyleSheet.create({
     },
     imageMessage: {
         width: "50%",
-        resizeMode: "contain",
+        // resizeMode: "contain",
         height: undefined,
         aspectRatio: 1,
         alignSelf: 'flex-end',
+        borderColor: 'black',
+        borderWidth: 1
     },
     textMessage: {
         borderRadius: 5,
