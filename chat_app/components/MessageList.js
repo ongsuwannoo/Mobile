@@ -21,6 +21,8 @@ export default class MessageList extends React.Component {
                 return (
                     <Image style={styles.imageMessage} source={{ uri }} />
                 )
+            case 'location':
+            // return ()
         }
     }
 
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         backgroundColor: 'rgb(16,135,255)',
         borderRadius: 20,
-        width: '30%',
+        width: '40%',
         justifyContent: 'center',
         alignSelf: 'flex-end'
     },
