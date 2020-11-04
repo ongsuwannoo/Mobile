@@ -1,18 +1,37 @@
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { View, Text, Button, StyleSheet, ScrollView, Image} from "react-native";
-import { MEALS } from "../data/dummy-data";
+import CustomHeaderButton from "../components/CustomHeaderButton";
+import { HeaderButtons, Item } from "react-navigation-header-buttons";
+import { useSelector } from 'react-redux'; 
+import {MEALS} from '../data/dummy-data'
+import { useDispatch } from 'react-redux'
+import {toggleFavorite} from '../store/actions/mealAction'
+
+
 
 const MealDetailScreen = (props) => {
   // เขียนโค้ดเพิ่ม เพื่อดึงอ็อบเจ๊คเมนูอาหารที่ผู้ใช้เลือกเอาไว้
-
   const MealId = props.navigation.getParam('MealId')
-  const selectedMeal = MEALS.find((cat) => cat.id === MealId);
+  const semeal =  useSelector(state => state.meals.meals)
+  const selectedMeal = semeal.find((meal) => meal.id === MealId)
+  const  currentMealIsFav = useSelector((state) => state.meals.favoriteMeals.some((meal) => meal.id === MealId))
+  const dispatch = useDispatch()
 
-  console.log(selectedMeal)
+  const toggleFavoriteHandler = useCallback(() =>{
+    dispatch(toggleFavorite(MealId))
+  }, [dispatch, MealId])
+
+  useEffect(() =>{
+    props.navigation.setParams({togleFav : toggleFavoriteHandler})
+  }, [toggleFavoriteHandler])
+
+  useEffect(() =>{
+    props.navigation.setParams({isFav : currentMealIsFav})
+  }, [currentMealIsFav])
   return (
     <View>
       <ScrollView>
-        <View>
+      <View>
           <Image source={{uri: selectedMeal.imageUrl}}  style={{width: '100%', height: 400}}/>
         </View>
         <View style={{flexDirection: 'row', alignItems:'center', justifyContent:'center', marginTop: 20}}>
@@ -46,10 +65,36 @@ const MealDetailScreen = (props) => {
 };
 
 MealDetailScreen.navigationOptions = (navigationData) => {
-  const MealId = navigationData.navigation.getParam('MealId')
-  const selectedMeal = MEALS.find((cat) => cat.id === MealId);
+  const MealId = navigationData.navigation.getParam('mealTitle')
+  const toggleFavorite = navigationData.navigation.getParam('togleFav')
+  const isFav = navigationData.navigation.getParam('isFav')
   return {
-    headerTitle: selectedMeal.title
+    headerTitle: MealId,
+    headerRight: () =>{
+      if(isFav){
+        return(
+          <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>           
+          <Item
+              title="Menu"
+              // {...isFav ? iconName="ios-star" :iconName="ios-star-outline" }
+              iconName="ios-star"
+              onPress={toggleFavorite}
+              />
+          </HeaderButtons>
+        )
+      }else{
+        return(
+          <HeaderButtons HeaderButtonComponent={CustomHeaderButton}>           
+          <Item
+              title="Menu"
+              // {...isFav ? iconName="ios-star" :iconName="ios-star-outline" }
+              iconName="ios-star-outline"
+              onPress={toggleFavorite}
+              />
+          </HeaderButtons>
+        )
+      }
+    }
   };
 };
 

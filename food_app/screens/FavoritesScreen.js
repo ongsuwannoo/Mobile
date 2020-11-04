@@ -2,13 +2,15 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { HeaderButton } from "react-navigation-header-buttons";
 import { Ionicons } from "@expo/vector-icons";
-import {MEALS} from "../data/dummy-data"
 import MealList from "../components/MealList"
+import { useSelector } from 'react-redux'; 
+
 
 
 
 const FavoritesScreen = (props) => {
-  const favMeal = MEALS.filter((meal) => meal.id === "m1" || meal.id === "m2")
+  const favoriteMeals = useSelector(state => state.meals.favoriteMeals)
+  const favMeal = favoriteMeals.filter((meal) => meal.id)
   return (
     <View style={styles.screen}>
       <Text>The Favorites Screen!</Text>
